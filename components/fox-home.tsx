@@ -120,35 +120,35 @@ export function FoxHome({ walletAddress, foxData, onLogout }: FoxHomeProps) {
       id: "fish1",
       name: "1 Fish",
       icon: Fish,
-      basePrice: 0.5,
+      basePrice: 0.0002,
       duration: "Lasts 1 day",
     },
     {
       id: "fish7",
       name: "Box of 7 Fish",
       icon: Package,
-      basePrice: 3.5,
+      basePrice: 0.0014,
       duration: "Lasts 1 week",
     },
     {
       id: "fish15",
       name: "Box of 15 Fish",
       icon: Package,
-      basePrice: 7.5,
+      basePrice: 0.003,
       duration: "Lasts 2 weeks",
     },
     {
       id: "golden",
       name: "Golden Fish",
       icon: Sparkles,
-      basePrice: 100,
+      basePrice: 0.0065,
       duration: "Boosts your chances of winning",
     },
     {
       id: "potion",
       name: "Revive Potion",
       icon: Flask,
-      basePrice: 1,
+      basePrice: 0.003,
       duration: "Revives your fox if it dies",
     },
   ]
@@ -174,7 +174,7 @@ export function FoxHome({ walletAddress, foxData, onLogout }: FoxHomeProps) {
   const shareOnX = () => {
     const text = `🦊🔥 Day ${streak} keeping my fox alive!
 
-I'm saving every day with a no-loss lottery: deposit cUSD, grow your savings with yield, win prizes 💰 and support Patagonia's wildlife 🌱
+I'm saving every day with a no-loss lottery: deposit CELO, grow your savings with yield, win prizes 💰 and support Patagonia's wildlife 🌱
 
 Start playing 👉 https://zorrito.vercel.app
 
@@ -291,7 +291,7 @@ Start playing 👉 https://zorrito.vercel.app
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <p className="text-xs text-gray-600">Your Funds</p>
-                  <p className="text-lg font-bold text-gray-900">10.5 cUSD</p>
+                  <p className="text-lg font-bold text-gray-900">10.5 CELO</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-600">Your Chances</p>
@@ -299,11 +299,11 @@ Start playing 👉 https://zorrito.vercel.app
                 </div>
                 <div>
                   <p className="text-xs text-gray-600">Total Pool</p>
-                  <p className="text-lg font-bold text-[#5BA7A4]">333.5 cUSD</p>
+                  <p className="text-lg font-bold text-[#5BA7A4]">333.5 CELO</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-600">Next Prize</p>
-                  <p className="text-lg font-bold text-[#F28C33]">333 cUSD</p>
+                  <p className="text-lg font-bold text-[#F28C33]">333 CELO</p>
                 </div>
               </div>
             </Card>
@@ -338,7 +338,7 @@ Start playing 👉 https://zorrito.vercel.app
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {feedingOptions.map((option) => {
               const quantity = quantities[option.id as keyof typeof quantities]
-              const totalPrice = (option.basePrice * quantity).toFixed(2)
+              const totalPrice = (option.basePrice * quantity).toFixed(6)
               const Icon = option.icon
               const isPotion = option.id === "potion"
               return (
@@ -386,7 +386,7 @@ Start playing 👉 https://zorrito.vercel.app
                     )}
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-sm whitespace-nowrap text-gray-900">
-                        {isPotion ? option.basePrice : totalPrice} cUSD
+                        {isPotion ? option.basePrice.toFixed(6) : totalPrice} CELO
                       </span>
                       <Button
                         size="sm"
