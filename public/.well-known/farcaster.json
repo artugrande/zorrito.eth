@@ -8,8 +8,8 @@
     "splashImageUrl": "https://zorrito-eth.vercel.app/splash.png",
     "splashBackgroundColor": "#F57C00",
     "webhookUrl": "https://zorrito-eth.vercel.app/api/webhook",
-    "subtitle": "Play → Save → Earn → Protect Patagonia.",
-    "description": "Builds saving habits through a fun experience, without risking your money. Deposit stablecoins ⛓️ Keep your fox alive 🦊 Share your streak! 📅 Generate yield 📈 Win prizes 💰 Support Patagonia wildlife 🌲",
+    "subtitle": "Play Save Earn Protect",
+    "description": "Builds saving habits through a fun experience, without risking your money. Deposit stablecoins, keep your fox alive, share your streak, generate yield and win prizes.",
     "primaryCategory": "finance"
   },
   "accountAssociation": {
