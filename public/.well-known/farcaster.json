@@ -8,7 +8,7 @@
     "splashImageUrl": "https://zorrito-eth.vercel.app/splash.png",
     "splashBackgroundColor": "#F57C00",
     "webhookUrl": "https://zorrito-eth.vercel.app/api/webhook",
-    "subtitle": "Play → Save → Earn → Protect Patagonia",
+    "subtitle": "Play → Save → Earn → Protect Patagonia.",
     "description": "Builds saving habits through a fun experience, without risking your money.",
     "primaryCategory": "finance"
   },
