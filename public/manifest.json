@@ -1,23 +1,20 @@
 {
-  "name": "Nano Banana Pro",
-  "short_name": "NB Pro",
-  "description": "AI-powered image generation and editing tool",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#005B5B",
-  "icons": [
-    {
-      "src": "/icon-192.jpg",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-512.jpg",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
+  "frame": {
+    "name": "Zorrito",
+    "version": "1",
+    "iconUrl": "https://zorrito-eth.vercel.app/icon.png",
+    "homeUrl": "https://zorrito-eth.vercel.app",
+    "imageUrl": "https://zorrito-eth.vercel.app/image.png",
+    "splashImageUrl": "https://zorrito-eth.vercel.app/splash.png",
+    "splashBackgroundColor": "#F57C00",
+    "webhookUrl": "https://zorrito-eth.vercel.app/api/webhook",
+    "subtitle": "Play → Save → Earn → Protect Patagonia",
+    "description": "Builds saving habits through a fun experience, without risking your money.",
+    "primaryCategory": "finance"
+  },
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEzNzgwNTMsInR5cGUiOiJhdXRoIiwia2V5IjoiMHgwZWE1NTdDRTA3MDM5QjA0MTdhMDI3QjA5MDMzNjg0MjU4QTYzRTI2In0",
+    "payload": "eyJkb21haW4iOiJ6b3JyaXRvLWV0aC52ZXJjZWwuYXBwIn0",
+    "signature": "jDOiTa+39k2zkOuUGrrWlMLQnsjpYNKP7b4lUFQ7cMVwcThlpIrbItNdp+fTv1EMCR9FeJ5H/94j9482Zd4nmBw="
+  }
 }
