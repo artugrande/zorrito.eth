@@ -2,10 +2,8 @@
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, Loader2 } from "lucide-react"
-import { useState, useEffect } from "react"
-import { useAccount, useSendTransaction, useWaitForTransactionReceipt } from "wagmi"
-import { parseEther } from "viem"
+import { CheckCircle2 } from "lucide-react"
+import { useState } from "react"
 
 interface PurchaseModalProps {
   open: boolean
@@ -18,47 +16,20 @@ interface PurchaseModalProps {
   } | null
 }
 
-const ESCROW_CONTRACT_ADDRESS = "0x69ba0851c4b8Ed0ee8e752fdDca36c4Bf85Af17F" as `0x${string}`
-
 export function PurchaseModal({ open, onOpenChange, item }: PurchaseModalProps) {
   const [showSuccess, setShowSuccess] = useState(false)
-  const { address, isConnected } = useAccount()
-  const { data: hash, sendTransaction, isPending, error } = useSendTransaction()
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash,
-  })
 
   if (!item) return null
 
-  const totalCost = (item.price * item.quantity).toFixed(6)
-  const totalCostWei = parseEther(totalCost)
+  const totalCost = (item.price * item.quantity).toFixed(2)
 
-  const handleConfirmPurchase = async () => {
-    if (!isConnected || !address) {
-      alert("Please connect your wallet first")
-      return
-    }
-
-    try {
-      await sendTransaction({
-        to: ESCROW_CONTRACT_ADDRESS,
-        value: totalCostWei,
-      })
-    } catch (err) {
-      console.error("Transaction failed:", err)
-    }
+  const handleConfirmPurchase = () => {
+    setShowSuccess(true)
+    setTimeout(() => {
+      setShowSuccess(false)
+      onOpenChange(false)
+    }, 3000)
   }
-
-  // Show success when transaction is confirmed
-  useEffect(() => {
-    if (isConfirmed && !showSuccess) {
-      setShowSuccess(true)
-      setTimeout(() => {
-        setShowSuccess(false)
-        onOpenChange(false)
-      }, 3000)
-    }
-  }, [isConfirmed, showSuccess, onOpenChange])
 
   const handleClose = () => {
     setShowSuccess(false)
@@ -79,8 +50,8 @@ export function PurchaseModal({ open, onOpenChange, item }: PurchaseModalProps) 
             <div className="p-4 bg-black rounded-lg border border-zinc-800 space-y-2">
               <p className="text-zinc-400">Amount Spent</p>
               <div className="flex items-center justify-center gap-2">
-                <img src="/images/celo.png" alt="CELO" className="w-6 h-6" />
-                <span className="text-2xl font-bold">{totalCost} CELO</span>
+                <img src="/images/celousdcoin.png" alt="cUSD" className="w-6 h-6" />
+                <span className="text-2xl font-bold">{totalCost} cUSD</span>
               </div>
             </div>
 
@@ -125,8 +96,8 @@ export function PurchaseModal({ open, onOpenChange, item }: PurchaseModalProps) 
             <div className="pt-3 border-t border-zinc-800 flex items-center justify-between">
               <span className="text-zinc-400">Total Cost</span>
               <div className="flex items-center gap-2">
-                <img src="/images/celo.png" alt="CELO" className="w-5 h-5" />
-                <span className="text-xl font-bold">{totalCost} CELO</span>
+                <img src="/images/celousdcoin.png" alt="cUSD" className="w-5 h-5" />
+                <span className="text-xl font-bold">{totalCost} cUSD</span>
               </div>
             </div>
           </div>
@@ -137,29 +108,12 @@ export function PurchaseModal({ open, onOpenChange, item }: PurchaseModalProps) 
             </p>
           </div>
 
-          {error && (
-            <div className="p-3 bg-red-950/20 rounded-lg border border-red-800">
-              <p className="text-sm text-red-200">Error: {error.message}</p>
-            </div>
-          )}
-
           <div className="flex gap-3">
-            <Button variant="outline" onClick={handleClose} className="flex-1 border-zinc-700 bg-transparent" disabled={isPending || isConfirming}>
+            <Button variant="outline" onClick={handleClose} className="flex-1 border-zinc-700 bg-transparent">
               Cancel
             </Button>
-            <Button 
-              onClick={handleConfirmPurchase} 
-              className="flex-1 bg-white text-black hover:bg-zinc-200"
-              disabled={isPending || isConfirming || !isConnected}
-            >
-              {isPending || isConfirming ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {isPending ? "Confirming..." : "Processing..."}
-                </>
-              ) : (
-                "Confirm Purchase"
-              )}
+            <Button onClick={handleConfirmPurchase} className="flex-1 bg-white text-black hover:bg-zinc-200">
+              Confirm Purchase
             </Button>
           </div>
         </div>
