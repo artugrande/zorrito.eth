@@ -2,12 +2,12 @@
   "frame": {
     "name": "Zorrito",
     "version": "1",
-    "iconUrl": "https://zorrito.vercel.app/icon.png",
+    "iconUrl": "https://zorrito-eth.vercel.app/icon.png",
     "homeUrl": "https://zorrito-eth.vercel.app/",
     "subtitle": "Play → Save → Earn → Protect Patagonia.",
     "description": "Builds saving habits through a fun experience, without risking your money.",
     "primaryCategory": "finance",
-    "splashImageUrl": "https://zorrito.vercel.app/splashimage.png",
+    "splashImageUrl": "https://zorrito-eth.vercel.app/splashimage.png",
     "splashBackgroundColor": "#F57C00",
     "webhookUrl": "https://zorrito-eth.vercel.app/webhook"
   },
