@@ -18,6 +18,10 @@ export default function Home() {
     setCurrentScreen("disclaimer")
   }
 
+  const handleDisclaimerWalletConnected = (address: string) => {
+    setWalletAddress(address)
+  }
+
   const handleDisclaimerAcknowledged = () => {
     setCurrentScreen("create")
   }
@@ -44,7 +48,12 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black">
       {currentScreen === "connect" && <ConnectWallet onConnect={handleWalletConnected} />}
-      {currentScreen === "disclaimer" && <ToolsDisclaimer onContinue={handleDisclaimerAcknowledged} />}
+      {currentScreen === "disclaimer" && (
+        <ToolsDisclaimer 
+          onContinue={handleDisclaimerAcknowledged} 
+          onWalletConnected={handleDisclaimerWalletConnected}
+        />
+      )}
       {currentScreen === "create" && (
         <CreateFox walletAddress={walletAddress} onFoxCreated={handleFoxCreated} onBack={handleBackToHome} />
       )}

@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Wallet } from "lucide-react"
+import { useAccount, useConnect } from "wagmi"
+import { sdk } from "@farcaster/miniapp-sdk"
 
 interface ConnectWalletProps {
   onConnect: (address: string) => void
@@ -11,7 +13,24 @@ interface ConnectWalletProps {
 
 export function ConnectWallet({ onConnect }: ConnectWalletProps) {
   const [isConnecting, setIsConnecting] = useState(false)
+  const [isReady, setIsReady] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const { isConnected, address } = useAccount()
+  const { connect, connectors } = useConnect()
+
+  useEffect(() => {
+    // Initialize Farcaster SDK
+    const initSDK = async () => {
+      try {
+        await sdk.actions.ready()
+        setIsReady(true)
+      } catch (error) {
+        console.error("Failed to initialize Farcaster SDK:", error)
+        setIsReady(true) // Continue even if SDK fails (for development)
+      }
+    }
+    initSDK()
+  }, [])
 
   useEffect(() => {
     if (videoRef.current) {
@@ -20,6 +39,14 @@ export function ConnectWallet({ onConnect }: ConnectWalletProps) {
       })
     }
   }, [])
+
+  // Auto-connect if wallet is already connected
+  useEffect(() => {
+    if (isConnected && address) {
+      onConnect(address)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected, address])
 
   const handleConnect = async () => {
     setIsConnecting(true)
@@ -30,11 +57,25 @@ export function ConnectWallet({ onConnect }: ConnectWalletProps) {
       })
     }
 
-    setTimeout(() => {
-      const mockAddress = "0x" + Math.random().toString(16).substring(2, 42)
-      onConnect(mockAddress)
+    try {
+      // Try to connect with Farcaster connector
+      if (connectors.length > 0) {
+        const result = await connect({ connector: connectors[0] })
+        if (result && address) {
+          setIsConnecting(false)
+        }
+      } else {
+        // Fallback to mock address if no connector available
+        setTimeout(() => {
+          const mockAddress = "0x" + Math.random().toString(16).substring(2, 42)
+          onConnect(mockAddress)
+          setIsConnecting(false)
+        }, 1500)
+      }
+    } catch (error) {
+      console.error("Failed to connect wallet:", error)
       setIsConnecting(false)
-    }, 1500)
+    }
   }
 
   return (

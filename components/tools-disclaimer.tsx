@@ -1,13 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ChevronRight } from "lucide-react"
+import { useAccount, useConnect } from "wagmi"
 
 interface ToolsDisclaimerProps {
   onContinue: () => void
+  onWalletConnected?: (address: string) => void
 }
 
 const tools = [
@@ -40,8 +42,53 @@ const tools = [
   },
 ]
 
-export function ToolsDisclaimer({ onContinue }: ToolsDisclaimerProps) {
+export function ToolsDisclaimer({ onContinue, onWalletConnected }: ToolsDisclaimerProps) {
   const [acknowledged, setAcknowledged] = useState(false)
+  const [isConnecting, setIsConnecting] = useState(false)
+  const { isConnected, address } = useAccount()
+  const { connect, connectors } = useConnect()
+
+  // Auto-connect wallet if not connected
+  useEffect(() => {
+    if (!isConnected && connectors.length > 0) {
+      // Try to auto-connect silently
+      connect({ connector: connectors[0] }).catch(() => {
+        // Silent fail, user will connect manually
+      })
+    }
+  }, [isConnected, connectors, connect])
+
+  // Notify parent when wallet is connected
+  useEffect(() => {
+    if (isConnected && address && onWalletConnected) {
+      onWalletConnected(address)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected, address])
+
+  const handleContinue = async () => {
+    if (!acknowledged) return
+
+    // If wallet is not connected, connect it first
+    if (!isConnected && connectors.length > 0) {
+      setIsConnecting(true)
+      try {
+        await connect({ connector: connectors[0] })
+        // Connection will trigger the useEffect that calls onWalletConnected
+        // Then we continue after a short delay
+        setTimeout(() => {
+          setIsConnecting(false)
+          onContinue()
+        }, 500)
+      } catch (error) {
+        console.error("Failed to connect wallet:", error)
+        setIsConnecting(false)
+      }
+    } else {
+      // Wallet already connected, just continue
+      onContinue()
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 page-background">
@@ -111,11 +158,11 @@ export function ToolsDisclaimer({ onContinue }: ToolsDisclaimerProps) {
 
           {/* Continue Button */}
           <Button
-            onClick={onContinue}
-            disabled={!acknowledged}
+            onClick={handleContinue}
+            disabled={!acknowledged || isConnecting}
             className="w-full h-12 text-lg font-semibold bg-[#000000] text-white hover:bg-[#222222] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Continue
+            {isConnecting ? "Connecting wallet..." : isConnected ? "Continue" : "Continue"}
             <ChevronRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
